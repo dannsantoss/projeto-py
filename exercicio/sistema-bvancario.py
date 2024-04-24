@@ -1,44 +1,66 @@
 # sitema bancario com operacoes: sacar, depositar e vizualizar extrato.
 
-menu = ''' 
+menu = """
   [d] Depositar
   [s] Sacar
   [e] extrato
   [q] sair
-
-'''
+"""
 
 saldo = 0
 limite = 500
-numero_saque = 0
-LIMITE_SAQUE = 3
+extrato = ""
+numero_saques = 0
+LIMITE_SAQUES = 3
 
 while True:
     opcao = input(menu)
 
     if opcao == "d":
-        print ("Depositar")
+        valor = float(input("Digite o valor de que sera depositado:"))
+
+        if valor > 0:
+            saldo += valor
+            extrato += f"Deposito: R$ {valor:.2f}\n"
+
+        else:
+            print("Operação falhou! O valor informado é invalido.")
 
     elif opcao == "s":
-        print ("Sacar")
+        valor = float(input("Informe o valor do saque: "))
+
+        excedeu_saldo = valor > saldo
+
+        excedeu_limite = valor > limite
+
+        excedeu_saques = numero_saques >= LIMITE_SAQUES
+
+        if excedeu_saldo:
+            print("Operação falhou! Você não tem saldo suficiente.")
+
+        elif excedeu_limite:
+            print("Operação falhou! O valor do saque excede o limite.")
+
+        elif excedeu_saques:
+            print("Operação falhou! Número máximo de saques excedido.")
+
+        elif valor > 0:
+            saldo -= valor
+            extrato += f"Saque: R$ {valor:.2f}\n"
+            numero_saques += 1
+
+        else:
+            print("Operação falhou! O valor informado é inválido.")
+
 
     elif opcao == "e":
-        print ("Extrato")
+        print("\n================ EXTRATO ================")
+        print("Não foram realizadas movimentações." if not extrato else extrato)
+        print(f"\nSaldo: R$ {saldo:.2f}")
+        print("==========================================")
 
     elif opcao == "q":
         break
 
     else:
         print("Operação invalida, por favoor selecione novamente a operaçao desejada")
-
-# deposito - dever ser posivel depositar valores positivos, devem ser amarzenas e uma variavel e exibidos na operaçao de extrato
-
-# saque- 3 saque diario de maximo 500
-# caso nao tenha dinheiro na conta deve exibir nao sera possivel sacar o dinheiro por falta de saldo
-# todos os saldos devem se armazenaos em uma variavel e exibidos na operaçao de extrato
-
-# extrato - deve lista todos depositos e sauqe realizados na conta
-# no fim deve ser exibido o salto atual da Conta
-# os valore devem ser exibidos em formato r$ exemplo 1500.45 = R$ 1500.45
-
-
